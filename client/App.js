@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
-
 import styles from './App.css';
-
 import MessageForm from './MessageForm';
 import MessageList from './MessageList';
 import UsersList from './UsersList';
@@ -15,21 +13,41 @@ class App extends Component {
     super(props);
     this.state = {users: [], messages: [], text: '', name: ''};
   }
-};
 
-export default App;
-
-render() {
+  render() {
     return this.state.name !== '' ? this.renderLayout() : this.renderUserForm();
-}
-
-render() {
-    return this.state.name !== '' ? (
-      this.renderLayout()
-    ) : this.renderUserForm() // zaimplementowane w późniejszej części
   }
 
-renderLayout() {
+  renderUserForm() {
+     return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />)
+  }
+
+  componentDidMount() {
+    socket.on('message', message => this.messageReceive(message));
+    socket.on('update', ({users}) => this.chatUpdate(users));
+  }
+
+  messageReceive(message) {
+    const messages = [message, ...this.state.messages];
+    this.setState({messages});
+  }
+
+  chatUpdate(users) {
+    this.setState({users});
+  }
+
+  handleMessageSubmit(message) {
+    const messages = [message, ...this.state.messages];
+    this.setState({messages});
+    socket.emit('message', message);
+  }
+
+  handleUserSubmit(name) {
+    this.setState({name});
+    socket.emit('join', name);
+  }
+
+  renderLayout() {
    return (
       <div className={styles.App}>
         <div className={styles.AppHeader}>
@@ -57,32 +75,8 @@ renderLayout() {
       </div>
    );
 }
+};
 
-renderUserForm() {
-   return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />)
-}
+export default App;
 
-componentDidMount() {
-  socket.on('message', message => this.messageReceive(message));
-  socket.on('update', ({users}) => this.chatUpdate(users));
-}
 
-messageReceive(message) {
-  const messages = [message, ...this.state.messages];
-  this.setState({messages});
-}
-
-chatUpdate(users) {
-  this.setState({users});
-}
-
-handleMessageSubmit(message) {
-  const messages = [message, ...this.state.messages];
-  this.setState({messages});
-  socket.emit('message', message);
-}
-
-handleUserSubmit(name) {
-  this.setState({name});
-  socket.emit('join', name);
-}

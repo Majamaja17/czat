@@ -1,3 +1,4 @@
+import index from 'index.js';
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -21,14 +22,7 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket) {
-  //miejsce dla funkcji, które zostaną wykonane po podłączeniu klienta
-});
 
-server.listen(3000, function(){
-  console.log('listening on *:3000');
-});
-
-// klient nasłuchuje na wiadomość wejścia do czatu
 socket.on('join', function(name){
   // użytkownika, który pojawił się w aplikacji zapisujemy do serwisu trzymającego listę osób w czacie
   userService.addUser({
@@ -40,6 +34,12 @@ socket.on('join', function(name){
     users: userService.getAllUsers()
   });
 });
+});
+
+server.listen(3000, function(){
+  console.log('listening on *:3000');
+});
+
 
 io.on('connection', function(socket) {
   socket.on('disconnect', () => {

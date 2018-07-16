@@ -8,7 +8,7 @@ const webpack = require('webpack'),
 
 
     plugins = [new HtmlWebpackPlugin({
-        template: './src/index.htm',
+        template: './src/index.html',
         filename: 'index.html',
         inject: 'body'
         })
@@ -33,7 +33,7 @@ module.exports = {
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/dev-server',
-    ] : []).concat(['./client/index.js']),
+    ] : []).concat(['index.js']),
 
     output: {
         filename: './bundle.js',
