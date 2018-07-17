@@ -33,7 +33,7 @@ module.exports = {
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/dev-server',
-    ] : []).concat(['index.js']),
+    ] : []).concat(['./client/index.js']),
 
     output: {
         filename: './bundle.js',
