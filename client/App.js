@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { hot } from 'react-hot-loader';
 import io from 'socket.io-client';
 import styles from './App.css';
+
 import MessageForm from './MessageForm';
 import MessageList from './MessageList';
 import UsersList from './UsersList';
@@ -12,14 +14,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {users: [], messages: [], text: '', name: ''};
-  }
-
-  render() {
-    return this.state.name !== '' ? this.renderLayout() : this.renderUserForm();
-  }
-
-  renderUserForm() {
-     return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />)
   }
 
   componentDidMount() {
@@ -74,9 +68,16 @@ class App extends Component {
         </div>
       </div>
    );
-}
+  }
+  render() {
+    return this.state.name !== '' ? this.renderLayout() : this.renderUserForm();
+  }
+
+  renderUserForm() {
+     return (<UserForm onUserSubmit={name => this.handleUserSubmit(name)} />)
+  }
 };
 
-export default App;
+export default hot(module)(App);
 
 
