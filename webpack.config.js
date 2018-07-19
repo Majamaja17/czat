@@ -3,17 +3,13 @@ const webpack = require('webpack'),
     UglifyJsPlugin = require('uglifyjs-webpack-plugin'),
     OptimizeJsPlugin = require('optimize-js-plugin'),
     path = require('path'),
-
     env = process.env.NODE_ENV || 'development',
-
-
     plugins = [new HtmlWebpackPlugin({
         template: './src/index.html',
         filename: 'index.html',
         inject: 'body'
         })
     ];
-
 
 console.log('NODE_ENV:', env);
 
@@ -24,9 +20,9 @@ if (env === 'production') {
             sourceMap: false
         })
     );
-} else {
+    } else {
     plugins.push(new webpack.HotModuleReplacementPlugin())
-}
+    }
 
 module.exports = {
     entry: (env !== 'production' ? [
@@ -69,5 +65,5 @@ module.exports = {
         contentBase: './client'
     },
 
-    plugins: plugins
+    plugins
 };
